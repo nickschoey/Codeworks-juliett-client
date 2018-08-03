@@ -39,6 +39,7 @@ class HomePage extends React.Component {
                 <p>
                     <Link to="/login">Logout</Link>
                 </p>
+                <Link to="/register" className="btn btn-link">Register a new user</Link>
             </div>
         );
     }
