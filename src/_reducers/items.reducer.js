@@ -17,11 +17,21 @@ export function items (state = {}, action) {
       };
 
     case itemConstants.ADD_REQUEST:
-      return { adding: true };
+      return { 
+        ...state
+      };
+
     case itemConstants.ADD_SUCCESS:
-      return {};
+      return {
+        ...state,
+        items: [...state.items, action.item]
+        
+      };
+
     case itemConstants.ADD_FAILURE:
-      return {};
+      return {
+        error: action.error
+      };
 
 
     case itemConstants.DELETE_REQUEST:

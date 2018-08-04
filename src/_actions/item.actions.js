@@ -27,7 +27,9 @@ const addItem = (item) => {
     itemService.addItem(item)
       .then(
         item => {
-          dispatch(success());
+          console.log(item._id);
+          
+          dispatch(success(item));
           dispatch(alertActions.success('Item added Successfully'));
         },
         error => {

@@ -37,10 +37,19 @@ class ItemPage extends React.Component {
 
     this.setState({ submitted: true });
     const { item } = this.state;
-    const { dispatch } = this.props;
     if (item.name && item.description && item.priceFiat && item.imageURL) {
       this.props.addItem(item);
     }
+          this.setState({
+            item: {
+              name: '',
+              description: '',
+              priceFiat: '',
+              imageURL: ''
+            },
+            submitted: false
+          })
+
   }
 
   componentDidMount () {
@@ -64,7 +73,7 @@ class ItemPage extends React.Component {
           <ul>
             {items.items.map((item, index) =>
               <li key={item._id}>
-                {item.name}
+                {item.name} - {item.description}
                 {
                   item.deleting ? <em> - Deleting...</em>
                     : item.deleteError ? <span className="text-danger"> - ERROR: {item.deleteError}</span>
@@ -114,6 +123,7 @@ class ItemPage extends React.Component {
             }
             </div>
         </form>
+        <Link to="/" className="btn btn-link">Back</Link>
       </div>
     );
   }
