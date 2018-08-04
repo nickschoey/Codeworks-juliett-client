@@ -1,7 +1,7 @@
 var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = {
+module.exports = { 
     entry: './src/index.jsx',
     output: {
         path: path.resolve('dist'),
@@ -27,6 +27,7 @@ module.exports = {
         filename: 'index.html',
         inject: 'body'
     })],
+    devtool: '#eval-source-map',
     devServer: {
         historyApiFallback: true
     },
