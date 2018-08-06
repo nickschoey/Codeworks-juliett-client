@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { userActions } from '../_actions';
 
 class HomePage extends React.Component {
+
     componentDidMount() {
         this.props.dispatch(userActions.getAll());
     }
@@ -40,6 +41,7 @@ class HomePage extends React.Component {
                 </p>
                 <Link to="/register" className="btn btn-link">Register a new user</Link>
                 <Link to="/items" className="btn btn-link">Items</Link>
+                <Link to="/order" className="btn btn-link">Orders</Link>
             </div>
         );
     }
