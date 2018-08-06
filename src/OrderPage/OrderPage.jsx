@@ -12,6 +12,7 @@ class OrderPage extends React.Component {
   componentDidMount () {
 
     this.props.getAll()
+    this.props.getTransactions()
 
   }
 
@@ -28,8 +29,11 @@ class OrderPage extends React.Component {
   }
   render () {
     return (
+
       <div>
+        <ul>
         {this.listOrders()}
+        </ul>
       </div>
     )
   }
@@ -44,6 +48,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getAll: () => dispatch(orderActions.getAll()),
   delete: id => dispatch(orderActions.delete(id)),
+  getTransactions: () => dispatch(orderActions.getTransactions())
+  
 })
 
 const connectedOrderPage = connect(mapStateToProps, mapDispatchToProps)(OrderPage)

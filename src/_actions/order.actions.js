@@ -35,7 +35,24 @@ const _delete = (id) => {
   function failure (id, error) { return { type: orderConstants.DELETE_FAILURE, id, error } }
 }
 
+const getTransactions = () => {
+  return dispatch => {
+    dispatch(request());
+
+    orderService.getTransactions()
+      .then(
+        transactions => dispatch(success(transactions)),
+        error => dispatch(failure(error.toString()))
+      );
+  };
+
+  function request () { return { type: orderConstants.GETTRANSACTIONS_REQUEST } }
+  function success (transactions) { return { type: orderConstants.GETTRANSACTIONS_SUCCESS, transactions } }
+  function failure (error) { return { type: orderConstants.GETTRANSACTIONS_FAILURE, error } }
+}
+
     export const orderActions = {
       getAll,
-      delete: _delete
+      delete: _delete,
+      getTransactions
     };

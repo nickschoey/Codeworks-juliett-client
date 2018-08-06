@@ -8,7 +8,8 @@ export function orders (state = [], action) {
       };
     case orderConstants.GETALL_SUCCESS:
       return {
-        orders: action.orders,
+        orders: action.orders.filter(order => order.paid === false),
+        paidOrders: action.orders.filter(order => order.paid === true),
         loading: false
       }
       
@@ -38,6 +39,32 @@ export function orders (state = [], action) {
 
           return order;
         })
+      };
+
+    case orderConstants.GETTRANSACTIONS_REQUEST:
+      return {
+        loading: true
+      };
+
+    case orderConstants.GETTRANSACTIONS_SUCCESS:
+    let matches = [];  
+    for (const order of state.orders) {
+        for (const tx of action.transactions) {
+          if (order.wallet.toLowerCase() === tx.from.toLowerCase() && order.cryptoPrice === tx.value) {
+            matches.push([order,tx])
+          }
+        }
+      }
+      return {...state,
+        allTransactions: action.transactions,
+        matchedOrders: matches
+        
+      }
+
+
+    case orderConstants.GETTRASANCTIONS_FAILURE:
+      return {
+        error: action.error
       };
 
   

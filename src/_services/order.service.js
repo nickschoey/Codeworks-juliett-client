@@ -20,6 +20,15 @@ function _delete (id) {
     .then(handleResponse);
 }
 
+const getTransactions = () => {
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader()
+  };
+
+  return fetch(`${config.apiUrl}/transactions`, requestOptions).then(handleResponse);
+}
+
 function handleResponse (response) {
 
   return response.text()
@@ -41,5 +50,6 @@ function handleResponse (response) {
 }
 export const orderService = {
   getAll,
-  delete: _delete
+  delete: _delete,
+  getTransactions
 }
