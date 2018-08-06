@@ -1,7 +1,7 @@
 var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = { 
+module.exports = {
     entry: './src/index.jsx',
     output: {
         path: path.resolve('dist'),
@@ -19,6 +19,18 @@ module.exports = {
                 query: {
                     presets: ['react', 'es2015', 'stage-3']
                 }
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    'style-loader', {
+                        loader: 'css-loader',
+                        options: {
+                            importLoaders: 1
+                        }
+                    },
+                    'postcss-loader'
+                ]
             }
         ]
     },

@@ -10,6 +10,16 @@ const getAll = () => {
 return fetch(`${config.apiUrl}/order`, requestOptions).then(handleResponse);
 }
 
+function _delete (id) {
+  const requestOptions = {
+    method: 'DELETE',
+    headers: authHeader()
+  };
+
+  return fetch(`${config.apiUrl}/order/${id}`, requestOptions)
+    .then(handleResponse);
+}
+
 function handleResponse (response) {
 
   return response.text()
@@ -31,4 +41,5 @@ function handleResponse (response) {
 }
 export const orderService = {
   getAll,
+  delete: _delete
 }

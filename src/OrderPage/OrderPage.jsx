@@ -4,6 +4,11 @@ import { connect } from 'react-redux';
 import { orderActions } from '../_actions/order.actions';
 import moment from 'moment'
 class OrderPage extends React.Component {
+  handleDeleteOrder (id) {
+
+    return (e) => this.props.delete(id);
+  }
+  
   componentDidMount () {
 
     this.props.getAll()
@@ -14,7 +19,10 @@ class OrderPage extends React.Component {
     if (this.props.orders.loading === false) {
       return this.props.orders.orders.map(el =>
         <li key={el.id}>
-          {el.cryptoPrice} {el.name}. {el.items.length} item/s. {moment(el.createdDate).format('HH:MM')}. {el.paid ? 'Confirmed' : 'Pending'}. {el.wallet}
+          {el.cryptoPrice} {el.name}. {el.items.length} item/s. {moment(el.createdDate).format('HH:MM')}. {el.paid ? 'Confirmed' : 'Pending'}. {el.wallet} 
+          {
+            <span> - <a onClick={this.handleDeleteOrder(el._id)}>Delete</a></span>
+          }
         </li>)
     }
   }
@@ -35,6 +43,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getAll: () => dispatch(orderActions.getAll()),
+  delete: id => dispatch(orderActions.delete(id)),
 })
 
 const connectedOrderPage = connect(mapStateToProps, mapDispatchToProps)(OrderPage)
