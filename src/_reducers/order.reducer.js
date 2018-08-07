@@ -1,5 +1,6 @@
 import { orderConstants } from '../_constants';
 
+
 export function orders (state = [], action) {
   switch (action.type) {
     case orderConstants.GETALL_REQUEST:
@@ -8,25 +9,31 @@ export function orders (state = [], action) {
       };
     case orderConstants.GETALL_SUCCESS:
       return {
-        orders: action.orders.filter(order => order.paid === false),
-        paidOrders: action.orders.filter(order => order.paid === true),
+        orders: action.orders,
         loading: false
       }
       
-
+      
     case orderConstants.GETALL_FAILURE:
-      return {
-        error: action.error
-      };
+    return {
+      error: action.error
+    };
 
-    case orderConstants.DELETE_SUCCESS:
+    case orderConstants.DELETE_REQUEST:
+    // remove deleted item from state
+      return {
+        ...state,
+        loading: true
+      };
+      case orderConstants.DELETE_SUCCESS:
       // remove deleted item from state
       return {
-        orders: state.orders.filter(order => order._id !== action.id),
+        ...state,
+        unmatchedOrders: state.unmatchedOrders.filter(order => order.id !== action.id),
         loading: false
       };
     case orderConstants.DELETE_FAILURE:
-      // remove 'deleting:true' property and add 'deleteError:[error]' property to order 
+    // remove 'deleting:true' property and add 'deleteError:[error]' property to order 
       return {
         ...state,
         orders: state.orders.map(order => {
@@ -40,6 +47,20 @@ export function orders (state = [], action) {
           return order;
         })
       };
+    case orderConstants.CONFIRM_SUCCESS:
+
+      
+      return {
+        ...state,
+        matchedOrders: state.matchedOrders.filter(order => order.id !== action.id),
+        loading: false
+      };
+    case orderConstants.CONFIRM_FAILURE:
+       
+      return {
+        ...state,
+        loading: false
+      }
 
     case orderConstants.GETTRANSACTIONS_REQUEST:
       return {
@@ -47,18 +68,12 @@ export function orders (state = [], action) {
       };
 
     case orderConstants.GETTRANSACTIONS_SUCCESS:
-    let matches = [];  
-    for (const order of state.orders) {
-        for (const tx of action.transactions) {
-          if (order.wallet.toLowerCase() === tx.from.toLowerCase() && order.cryptoPrice === tx.value) {
-            matches.push([order,tx])
-          }
-        }
-      }
+    
       return {...state,
-        allTransactions: action.transactions,
-        matchedOrders: matches
-        
+        loading: false,
+        matchedOrders: action.transactions.matchedOrders,
+        unmatchedOrders: action.transactions.unmatchedOrders,
+        unmatchedTxs: action.transactions.unmatchedTxs,
       }
 
 

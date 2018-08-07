@@ -20,12 +20,14 @@ const getAll = () => {
 }
 
 const _delete = (id) => {
+ console.log(id);
+ 
   return dispatch => {
     dispatch(request(id));
 
     orderService.delete(id)
       .then(
-        order => dispatch(success(id)),
+        data => dispatch(success(id)),
         error => dispatch(failure(id, error.toString()))
       );
   };
@@ -33,6 +35,22 @@ const _delete = (id) => {
   function request (id) { return { type: orderConstants.DELETE_REQUEST, id } }
   function success (id) { return { type: orderConstants.DELETE_SUCCESS, id } }
   function failure (id, error) { return { type: orderConstants.DELETE_FAILURE, id, error } }
+}
+
+const confirm = (id) => {
+  return dispatch => {
+    dispatch(request(id));
+
+    orderService.confirm(id)
+      .then(
+        order => dispatch(success(id)),
+        error => dispatch(failure(order, error.toString()))
+      );
+  };
+
+  function request (id) { return { type: orderConstants.CONFIRM_REQUEST, id } }
+  function success (id) { return { type: orderConstants.CONFIRM_SUCCESS, id } }
+  function failure (order, error) { return { type: orderConstants.CONFIRM_FAILURE, order, error } }
 }
 
 const getTransactions = () => {
@@ -54,5 +72,6 @@ const getTransactions = () => {
     export const orderActions = {
       getAll,
       delete: _delete,
-      getTransactions
+      getTransactions,
+      confirm
     };

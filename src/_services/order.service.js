@@ -20,6 +20,19 @@ function _delete (id) {
     .then(handleResponse);
 }
 
+function confirm (id) {
+  console.log(JSON.stringify({id}));
+  
+  const requestOptions = {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({id})
+  };
+
+  return fetch(`${config.apiUrl}/order/`, requestOptions)
+    .then(handleResponse);
+}
+
 const getTransactions = () => {
   const requestOptions = {
     method: 'GET',
@@ -51,5 +64,6 @@ function handleResponse (response) {
 export const orderService = {
   getAll,
   delete: _delete,
-  getTransactions
+  getTransactions,
+  confirm,
 }
