@@ -31,8 +31,9 @@ class OrderPage extends React.Component {
 
 
       return orders.map((order, i) =>
-        <AccordionItem title={`${moment(order.Createdate).format('HH:MM DD/MM')} ${order.name} ${order.items.length} item/s`} key={i}>
+        <AccordionItem title={`${moment(order.createdDate).format('HH:MM DD/MM')} ${order.name} ${order.items.length} item/s`} key={i}>
           <div className="userData">
+            COSTUMER INFO<br />
             id: {order.id}<br />
             name: {order.name}<br />
             email: {order.email}<br />
@@ -41,9 +42,17 @@ class OrderPage extends React.Component {
           </div>
           <div className="orderData">
             ORDER<br />
+            <ul>
             {order.items.map(item =>
               <li>{item.name}</li>
             )}
+            </ul>
+          </div>
+          <div className="paymentData">
+            PAYMENT INFO<br/>
+            Tx Id: {confirmed ? order.transaction : 'PENDING'}<br />
+            Price in ETH: {order.cryptoPrice}<br />
+            Price in EUR: {order.fiatPrice}<br />
           </div>
           <div onClick={confirmed ? this.handleConfirmOrder(order.id) : this.handleDeleteOrder(order.id)} className="action">
             <FontAwesomeIcon icon={confirmed ? faCheck : faTrash}/>

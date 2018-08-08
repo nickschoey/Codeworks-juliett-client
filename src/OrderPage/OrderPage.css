@@ -2,6 +2,12 @@ ul {
   list-style-type: none;
 }
 
+h1 {
+  font-size: 30px;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
 .react-sanfona-item {
   border: 1px dotted #FAFAFA;
   border-radius: 5px;
@@ -15,7 +21,7 @@ ul {
   align-items: center;
   min-width: 400px;
   min-height: 50px;
-  
+  font-size: 20px;
 }
 
 .react-sanfona-item-body-wrapper {
@@ -23,7 +29,7 @@ ul {
 }
 
 .main__order {
-  min-height: 100%;
+  min-height: 100vh;
   min-width: 100%;
   padding: 15px;
   display: flex;
@@ -31,5 +37,22 @@ ul {
   /* text-align: center; */
 }
 
+.action {
+  font-size: 45px;
+  display: flex;
+  justify-content: flex-end
+}
+
+.userData {
+  margin-bottom: 8px;
+}
+
+.orderData {
+  margin-bottom: 8px;
+}
 
 
+.paymentData {
+  margin-bottom: 8px;
+  
+}
