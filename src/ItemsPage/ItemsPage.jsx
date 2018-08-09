@@ -1,8 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-
 import { itemActions } from '../_actions';
+import './ItemsPage.css';
+import { faCheck, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+const options = [
+  { value: 'salads', label: 'Salads' },
+  { value: 'pasta', label: 'Pasta' },
+  { value: 'pizza', label: 'Pizza' },
+  { value: 'drinks', label: 'drinks' }
+];
 
 class ItemPage extends React.Component {
   constructor (props) {
@@ -12,6 +20,7 @@ class ItemPage extends React.Component {
       item: {
         name: '',
         description: '',
+        category: null,
         priceFiat: '',
         imageURL: ''
       },
@@ -23,6 +32,8 @@ class ItemPage extends React.Component {
   }
   handleChange (event) {
     const { name, value } = event.target;
+    console.log(value);
+
     const { item } = this.state;
     this.setState({
       item: {
@@ -40,15 +51,16 @@ class ItemPage extends React.Component {
     if (item.name && item.description && item.priceFiat && item.imageURL) {
       this.props.addItem(item);
     }
-          this.setState({
-            item: {
-              name: '',
-              description: '',
-              priceFiat: '',
-              imageURL: ''
-            },
-            submitted: false
-          })
+    this.setState({
+      item: {
+        name: '',
+        description: '',
+        category: null,
+        priceFiat: '',
+        imageURL: ''
+      },
+      submitted: false
+    })
 
   }
 
@@ -66,22 +78,25 @@ class ItemPage extends React.Component {
 
 
     return (
-      <div>
+      <div className="items__page">
+
         {items.loading && <em>Loading items...</em>}
         {items.error && <span className="text-danger">ERROR: {items.error}</span>}
         {items.items &&
-          <ul>
+          <div className="items__existing">
             {items.items.map((item, index) =>
-              <li key={item._id}>
-                {item.name} - {item.description}
-                {
-                  item.deleting ? <em> - Deleting...</em>
-                    : item.deleteError ? <span className="text-danger"> - ERROR: {item.deleteError}</span>
-                      : <span> - <a onClick={this.handleDeleteItem(item._id)}>Delete</a></span>
-                }
-              </li>
+              <div className="card" key={item._id}>
+                <img src={item.imageURL} alt="Avatar" />
+                <div className="card__container">
+                  <h4><b>{item.name} - {item.category}</b></h4>
+                  <p>{item.description}</p>
+                  <div onClick={this.handleDeleteItem(item._id)} className="action">
+                    <FontAwesomeIcon className="myIcon" icon={faTrash} />
+                  </div>
+                </div>
+              </div>
             )}
-          </ul>
+          </div>
         }
         <form name="form" onSubmit={this.handleSubmit}>
           <div className={'form-group' + (submitted && !item.name ? ' has-error' : '')}>
@@ -91,6 +106,14 @@ class ItemPage extends React.Component {
               <div className="help-block">A product name is required</div>
             }
           </div>
+          <div className={'form-group' + (submitted && !item.category ? ' has-error' : '')}>
+            <label htmlFor="category">Product category</label>
+            <input type="text" className="form-control" name="category" value={item.category} onChange={this.handleChange} />
+            {submitted && !item.name &&
+              <div className="help-block">A product name is required</div>
+            }
+          </div>
+
 
           <div className={'form-group' + (submitted && !item.description ? ' has-error' : '')}>
             <label htmlFor="description">Product description</label>
@@ -121,7 +144,7 @@ class ItemPage extends React.Component {
             {adding &&
               <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
             }
-            </div>
+          </div>
         </form>
         <Link to="/" className="btn btn-link">Back</Link>
       </div>

@@ -45,26 +45,13 @@ class RegisterPage extends React.Component {
 
     render() {
         const { registering  } = this.props;
-        const { user, submitted, users } = this.state;
+        const { user, submitted } = this.state;
+        const users = this.props.users;
+
+        
         return (
             <div className="col-md-6 col-md-offset-3">
-                <h3>All registered users:</h3>
-                {users.loading && <em>Loading users...</em>}
-                {users.error && <span className="text-danger">ERROR: {users.error}</span>}
-                {users.items &&
-                    <ul>
-                        {users.items.map((user, index) =>
-                            <li key={user.id}>
-                                {user.firstName + ' ' + user.lastName}
-                                {
-                                    user.deleting ? <em> - Deleting...</em>
-                                        : user.deleteError ? <span className="text-danger"> - ERROR: {user.deleteError}</span>
-                                            : <span> - <a onClick={this.handleDeleteUser(user.id)}>Delete</a></span>
-                                }
-                            </li>
-                        )}
-                    </ul>
-                }
+             
                 <h2>Register</h2>
                 <form name="form" onSubmit={this.handleSubmit}>
                     <div className={'form-group' + (submitted && !user.firstName ? ' has-error' : '')}>
@@ -109,9 +96,10 @@ class RegisterPage extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { users, authentication } = state;
+    const { authentication } = state;
     const { user } = authentication;
     const { registering } = state.registration;
+    const users = state.users.items;
     return {
         user,
         users,
